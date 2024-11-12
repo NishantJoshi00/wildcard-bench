@@ -11,6 +11,12 @@ impl<const N: usize> KeyStore<N> {
     }
 }
 
+impl<const N: usize> Default for KeyStore<N> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<const N: usize> Storage<N> for KeyStore<N> {
     fn increment(&mut self, key: [String; N]) -> anyhow::Result<()> {
         let len = 2usize.pow(N as u32);
@@ -55,7 +61,12 @@ fn apply_mask<const N: usize>(key: &[String; N], mask: usize) -> anyhow::Result<
 
     let max_mask = 2usize.pow(N as u32) - 1;
 
-    ensure!(mask <= max_mask, "mask is too large: max_mask={},mask={}", max_mask, mask);
+    ensure!(
+        mask <= max_mask,
+        "mask is too large: max_mask={},mask={}",
+        max_mask,
+        mask
+    );
 
     for i in 0..N {
         if mask & (1 << i) == 0 {

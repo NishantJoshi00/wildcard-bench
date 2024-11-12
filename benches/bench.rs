@@ -21,8 +21,10 @@ fn findkey_gen<const N: usize>(bencher: divan::Bencher) {
     });
 }
 
+// --- graph storage ---
+
 #[divan::bench(consts = [5, 6, 7, 8, 9, 10])]
-fn increment<const N: usize>(bencher: divan::Bencher) {
+fn graph_increment<const N: usize>(bencher: divan::Bencher) {
     let mut storage = wildcard_querier::graph::KeyStore::<N>::new();
 
     bencher
@@ -33,7 +35,7 @@ fn increment<const N: usize>(bencher: divan::Bencher) {
 }
 
 #[divan::bench(consts = [5, 6, 7, 8, 9, 10])]
-fn fetch<const N: usize>(bencher: divan::Bencher) {
+fn graph_fetch<const N: usize>(bencher: divan::Bencher) {
     let mut storage = wildcard_querier::graph::KeyStore::<N>::new();
 
     const ITER: usize = 10000;
@@ -50,6 +52,8 @@ fn fetch<const N: usize>(bencher: divan::Bencher) {
             let _ = black_box(output);
         });
 }
+
+// --- end ---
 
 fn main() {
     // divan::main();
